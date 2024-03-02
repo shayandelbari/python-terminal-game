@@ -28,7 +28,7 @@ def in_range(a, min, max):
     else:
         return a
 
-# getting to random values that doesn't overlap
+# getting two random values that doesn't overlap
 def random_place():
     i = random.randint(0, maxl)
     j = random.randint(0, maxc)
@@ -39,9 +39,9 @@ def random_place():
 
 def init():
     global player_c, player_l
-    for i in range(-1, maxl + 1):
+    for i in range(maxl + 1):
         world.append([])
-        for j in range(-1, maxc + 1):
+        for j in range(maxc + 1):
             world[i].append(' ' if random.random() > 0.03 else obs)
 
     for i in range(food_num):
