@@ -38,7 +38,7 @@ def random_place():
     while world[i][j] != ' ':
         i = random.randint(0, maxl)
         j = random.randint(0, maxc)
-    return i, j
+    return in_range(i, 0, maxl), in_range(j, 0, maxc)
 
 def init():
     global player_c, player_l
@@ -96,18 +96,27 @@ def move(c):
 def check_food():
     global score
     for i in range(len(food)):
-        fc, fl, fa = food[i]
-        if player_l == fc and player_c == fl:
+        fl, fc, fa = food[i]
+        if player_l == fl and player_c == fc:
             score += 10
             new_fl, new_fc = random_place()
-            new_fa = random.randint(1000, 10000)
+            new_fa = random.randint(10000, 100000)
             food[i] = (new_fl, new_fc, new_fa)
 
+        elif fa == 0:
+            new_fl, new_fc = random_place()
+            new_fa = random.randint(10000, 100000)
+            food[i] = (new_fl, new_fc, new_fa)
+
+        else:
+            fa -= 1
+            food[i] = (fl, fc, fa)
+
 def enemy_attack():
-    global player_c, player_l, playing
+    global playing
     for i, e in enumerate(enemy):
         el, ec = e
-        if player_l == el and player_c == ec:
+        if player_l == el and player_c == ec and not testing:
             stdscr.addstr(maxl // 2, maxc // 2, 'Game Over!')
             stdscr.refresh()
             time.sleep(3)
@@ -129,6 +138,7 @@ def enemy_attack():
 init()
 
 playing = True
+testing = True
 
 # main loop
 while playing:
