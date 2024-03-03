@@ -12,12 +12,15 @@ player = 'x'
 food_ch = '*'
 food_num = 10
 score = 0
+enemy_ch = 'E'
+enemy_num = 3
 
 maxl = curses.LINES - 1
 maxc = curses.COLS - 1
 
 world = []
 food = []
+enemy = []
 
 # making sure player cannot go outside the screen
 def in_range(a, min, max):
@@ -39,6 +42,7 @@ def random_place():
 
 def init():
     global player_c, player_l
+
     for i in range(maxl + 1):
         world.append([])
         for j in range(maxc + 1):
@@ -49,6 +53,10 @@ def init():
         fooda = random.randint(1000, 10000)
         food.append((foodl, foodc, fooda))
     
+    for i in range(enemy_num):
+        enemyl, enemyc = random_place()
+        enemy.append((enemyl, enemyc))
+
     player_l, player_c = random_place()
 
 def draw():
@@ -60,6 +68,10 @@ def draw():
         fl, fc, fa = f
         stdscr.addch(fl, fc, food_ch)
 
+    for e in enemy:
+        el, ec = e
+        stdscr.addch(el, ec, enemy_ch)
+    
     stdscr.addch(player_l, player_c, player)
     stdscr.addstr(1, 1, f"Score: {score}")
     
@@ -91,6 +103,29 @@ def check_food():
             new_fa = random.randint(1000, 10000)
             food[i] = (new_fl, new_fc, new_fa)
 
+def enemy_attack():
+    global player_c, player_l, playing
+    for i, e in enumerate(enemy):
+        el, ec = e
+        if player_l == el and player_c == ec:
+            stdscr.addstr(maxl // 2, maxc // 2, 'Game Over!')
+            stdscr.refresh()
+            time.sleep(3)
+            playing = False
+
+        elif ec < player_c and random.random() > 0.999:
+            ec += 1
+        elif ec > player_c and random.random() > 0.999:
+            ec -= 1
+        elif el < player_l and random.random() > 0.999:
+            el += 1
+        elif el > player_l and random.random() > 0.999:
+            el -= 1
+
+        el = in_range(el, 0, maxl)
+        ec = in_range(ec, 0, maxc)
+        enemy[i] = (el, ec)
+
 init()
 
 playing = True
@@ -107,6 +142,7 @@ while playing:
     elif c.lower() == 'q':
         playing = False
     
+    enemy_attack()
     check_food()
     draw()
 
