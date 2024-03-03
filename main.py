@@ -138,7 +138,7 @@ def enemy_attack():
 init()
 
 playing = True
-testing = True
+testing = False 
 
 # main loop
 while playing:
