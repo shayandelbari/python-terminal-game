@@ -59,6 +59,16 @@ def init():
 
     player_l, player_c = random_place()
 
+def game_over():
+    global playing
+    stdscr.clear()
+    massage = 'Game Over'
+    stdscr.addstr(maxl // 2, (maxc - len(massage)) // 2, 'Game Over!')
+    stdscr.refresh()
+    time.sleep(3)
+    playing = False
+ 
+
 def draw():
     for i in range(maxl):
         for j in range(maxc):
@@ -117,10 +127,7 @@ def enemy_attack():
     for i, e in enumerate(enemy):
         el, ec = e
         if player_l == el and player_c == ec and not testing:
-            stdscr.addstr(maxl // 2, maxc // 2, 'Game Over!')
-            stdscr.refresh()
-            time.sleep(3)
-            playing = False
+            game_over()
 
         elif ec < player_c and random.random() > 0.999:
             ec += 1
@@ -147,7 +154,7 @@ while playing:
     except:
         c = ''
 
-    if c in 'awsd':
+    if c in 'awds':
         move(c)
     elif c.lower() == 'q':
         playing = False
