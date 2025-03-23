@@ -1,5 +1,6 @@
 import curses, random, time
 
+# Initialize the curses screen
 stdscr = curses.initscr()
 curses.noecho()
 curses.cbreak()
@@ -7,6 +8,7 @@ stdscr.keypad(True)
 curses.curs_set(False)
 stdscr.nodelay(True)
 
+# Game characters and settings
 obs = '.'
 player = 'x'
 food_ch = '*'
@@ -15,14 +17,16 @@ score = 0
 enemy_ch = 'E'
 enemy_num = 3
 
+# Screen dimensions
 maxl = curses.LINES - 1
 maxc = curses.COLS - 1
 
+# Game world and entities
 world = []
 food = []
 enemy = []
 
-# making sure player cannot go outside the screen
+# Ensure player cannot go outside the screen
 def in_range(a, min, max):
     if a > max:
         return max
@@ -31,7 +35,7 @@ def in_range(a, min, max):
     else:
         return a
 
-# getting two random values that doesn't overlap
+# Get two random values that don't overlap
 def random_place():
     i = random.randint(0, maxl)
     j = random.randint(0, maxc)
@@ -40,6 +44,7 @@ def random_place():
         j = random.randint(0, maxc)
     return in_range(i, 0, maxl), in_range(j, 0, maxc)
 
+# Initialize the game world
 def init():
     global player_c, player_l
 
@@ -59,6 +64,7 @@ def init():
 
     player_l, player_c = random_place()
 
+# Display game over message
 def game_over():
     global playing
     stdscr.clear()
@@ -67,8 +73,8 @@ def game_over():
     stdscr.refresh()
     time.sleep(3)
     playing = False
- 
 
+# Draw the game world and entities
 def draw():
     for i in range(maxl):
         for j in range(maxc):
@@ -87,7 +93,7 @@ def draw():
     
     stdscr.refresh()
 
-# moving function
+# Move the player based on input
 def move(c):
     global player_l, player_c
     if c == 'w' and world[player_l - 1][player_c] != obs:
@@ -102,7 +108,7 @@ def move(c):
     player_l = in_range(player_l, 0, maxl - 1)
     player_c = in_range(player_c, 0, maxc - 1)
 
-# eating food and keeping score
+# Check if player eats food and update score
 def check_food():
     global score
     for i in range(len(food)):
@@ -122,6 +128,7 @@ def check_food():
             fa -= 1
             food[i] = (fl, fc, fa)
 
+# Handle enemy movement and attacks
 def enemy_attack():
     global playing
     for i, e in enumerate(enemy):
@@ -142,12 +149,13 @@ def enemy_attack():
         ec = in_range(ec, 0, maxc)
         enemy[i] = (el, ec)
 
+# Initialize the game
 init()
 
 playing = True
 testing = False 
 
-# main loop
+# Main game loop
 while playing:
     try:
         c = stdscr.getkey()
@@ -163,4 +171,5 @@ while playing:
     check_food()
     draw()
 
+# End curses mode
 curses.endwin()
