@@ -33,7 +33,7 @@ To run this game, you need to have Python installed on your system. Additionally
 1. Clone the repository:
 
     ```sh
-    git clone https://github.com/yourusername/python_terminal_game.git
+    git clone https://github.com/shayandelbari/python-terminal-game.git
     cd python_terminal_game
     ```
 
