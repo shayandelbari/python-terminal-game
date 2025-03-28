@@ -30,18 +30,12 @@ To run this game, you need to have Python installed on your system. Additionally
 > [!NOTE]
 > Curses library is not available on Windows by default. You can use a Unix-based system or WSL to run the game on Windows.
 
-1. Clone the repository:
+Clone the repository:
 
-    ```sh
-    git clone https://github.com/shayandelbari/python-terminal-game.git
-    cd python_terminal_game
-    ```
-
-2. Install the required dependencies:
-
-    ```sh
-    pip install -r requirements.txt
-    ```
+```sh
+git clone https://github.com/shayandelbari/python-terminal-game.git
+cd python_terminal_game
+```
 
 ## Usage
 
